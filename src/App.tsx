@@ -1,25 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import data from './constants/data.json'
+import Table1 from './components/Table1';
+import { createTheme, MantineProvider } from '@mantine/core';
+import Table2 from './components/Table2';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    
+    <MantineProvider>
+      <div className="flex_container">
+      <Table1/>
+      <Table2/>
+      </div>
+    </MantineProvider>
+    
+    
   );
 }
 
