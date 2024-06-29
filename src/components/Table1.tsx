@@ -29,9 +29,9 @@ interface TableData {
 
 export default function Table1() {
 
-    const[table, setTable] = useState<TableData[]>([])
+    const [table, setTable] = useState<TableData[]>([])
 
-    let result: { [key: string]: finalData } = {};
+    const result: { [key: string]: finalData } = {};
 
     useEffect(() => {
         {
@@ -40,12 +40,15 @@ export default function Table1() {
                 const cropName = item['Crop Name']
                 const cropProduction = item["Crop Production (UOM:t(Tonnes))"]
 
+                /**Check if crop production string is empty */
                 if (cropProduction === "") {
                     return;
                 }
+
+                /**convert cropProduction string into number */
                 const production = typeof cropProduction === "string" ? parseFloat(cropProduction) : cropProduction;
 
-                /**Check if there is this year present in result, if not then do this */
+                /**Check if there is this year already present in result object*/
                 if (!result[year]) {
                     result[year] = {
                         maxProduction: production,
@@ -66,18 +69,18 @@ export default function Table1() {
 
             })
         }
-        // console.log("results", result)
+        /**Transform the result object into an array */
         const table = Object.keys(result).map(year => ({
             Year: year,
             MaxCrop: result[year].maxCrop,
             MinCrop: result[year].minCrop,
         }));
         setTable(table);
-        //   console.log("table", table)
+
     }, [])
 
 
-    const rows = table.map((element:TableData) => (
+    const rows = table.map((element: TableData) => (
         <Table.Tr key={element.Year}>
             <Table.Td>{element.Year}</Table.Td>
             <Table.Td>{element.MaxCrop}</Table.Td>
@@ -91,18 +94,18 @@ export default function Table1() {
         <div className="outer_container">
             <Table.ScrollContainer minWidth={500} className="container">
                 <Table striped highlightOnHover withTableBorder withColumnBorders>
-            <Table.Thead>
-                <Table.Tr>
-                    <Table.Th>Year</Table.Th>
-                    <Table.Th>Crop with Maximum
-                        Production in that Year</Table.Th>
-                    <Table.Th>Crop with Minimum
-                        Production in that Year</Table.Th>
-                </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>{rows}</Table.Tbody>
-            </Table>
-        </Table.ScrollContainer>
+                    <Table.Thead>
+                        <Table.Tr>
+                            <Table.Th>Year</Table.Th>
+                            <Table.Th>Crop with Maximum
+                                Production in that Year</Table.Th>
+                            <Table.Th>Crop with Minimum
+                                Production in that Year</Table.Th>
+                        </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>{rows}</Table.Tbody>
+                </Table>
+            </Table.ScrollContainer>
         </div>
     )
 }

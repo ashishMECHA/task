@@ -15,8 +15,8 @@ export default function Table2() {
     const [averageData, setAverageData] = useState<AverageData[]>([]);
 
     useEffect(() => {
-        const cropsData: { [key: string]: { totalYield: number; totalArea: number; count: number } } = {};
 
+        const cropsData: { [key: string]: { totalYield: number; totalArea: number; count: number } } = {};
         {
             data.forEach((item) => {
                 const crop = item["Crop Name"];
@@ -26,13 +26,16 @@ export default function Table2() {
                 const yieldOfCrop = typeof yieldStr === "string" ? parseFloat(yieldStr) : yieldStr;
                 const area = typeof areaStr === "string" ? parseFloat(areaStr) : areaStr;
 
+                /** checks if there is already an entry for the crop */
                 if (!cropsData[crop]) {
                     cropsData[crop] = { totalYield: 0, totalArea: 0, count: 0 }
                 }
+                /**Accumulate the yield and area data for each crop and count the number of entries */
                 cropsData[crop].totalYield += yieldOfCrop || 0;
                 cropsData[crop].totalArea += area || 0;
                 cropsData[crop].count += 1;
 
+                /**Calculate the average for each crop */
                 const averages: AverageData[] = Object.keys(cropsData).map(crop => ({
                     crop,
                     averageYield: cropsData[crop].totalYield / cropsData[crop].count,
